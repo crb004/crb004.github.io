@@ -3,12 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Staging Files</title>
+    <title>Welcome to my models</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #333;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        a {
+            text-decoration: none;
+            color: #0066cc;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .loading {
+            color: #666;
+            font-style: italic;
+        }
+        .error {
+            color: red;
+        }
+    </style>
 </head>
 <body>
 
-    <h1>Staging Files</h1>
-    <p>List of files:</p>
-    <a href="ok_zebra_sensory_103k.uim">Click here to download UIM file</a>
+    <h1>Welcome to my models</h1>
+    
+    <ul id="model-list">
+        <li class="loading">Loading models from GitHub...</li>
+    </ul>
+
+    <script>
+        async function fetchModels() {
+            const apiUrl = 'https://api.github.com/repos/crb004/crb004.github.io/contents/';
+            const listElement = document.getElementById('model-list');
+            
+            try {
+                // Fetch the contents from the GitHub API
+                const response = await fetch(apiUrl);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                // Clear the "Loading..." message
+                listElement.innerHTML = '';
+                
+                // Filter the results to only include .zip files
+                const zipFiles = data.filter(item => item.name.endsWith('.zip'));
+                
+                if (zipFiles.length === 0) {
+                    listElement.innerHTML = '<li>No models found.</li>';
+                    return;
+                }
+                
+                // Loop through the filtered files and create list items
+                zipFiles.forEach(file => {
+                    const li = document.createElement('li');
+                    const a = document.createElement('a');
+                    
+                    // Remove the .zip extension for the display name
+                    const displayName = file.name.slice(0, -4);
+                    
+                    // Set the link properties
+                    a.href = file.download_url; // The direct download link provided by the API
+                    a.textContent = displayName;
+                    
+                    // Append the link to the list item, and the list item to the list
+                    li.appendChild(a);
+                    listElement.appendChild(li);
+                });
+                
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                listElement.innerHTML = `<li class="error">Failed to load models. (${error.message})</li>`;
+            }
+        }
+
+        // Run the function when the page finishes loading
+        window.onload = fetchModels;
+    </script>
 </body>
 </html>
+
