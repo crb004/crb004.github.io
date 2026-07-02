@@ -1,0 +1,21 @@
+<wap-provisioningdoc>
+  <characteristic version="10.0" type="AccessMgr">
+    <parm name="PermissionAccessAction" value="1" />
+    <parm name="PermissionAccessPermissionName" value="android.permission.SYSTEM_ALERT_WINDOW" />
+    <parm name="PermissionAccessPackageName" value="com.symbol.wfc.pttpro" />
+    <parm name="PermissionAccessSignature" value="MIIDhzCCAm+gAwIBAgIEQ8wDKDANBgkqhkiG9w0BAQsFADB0MQswCQYDVQQGEwJVUzELMAkGA1UECBMCSUwxEzARBgNVBAcTClNjaGF1bWJ1cmcxHDAaBgNVBAoTE1N5bWJvbCBUZWNobm9sb2dpZXMxCzAJBgNVBAsTAk1DMRgwFgYDVQQDEw9Jb3VyaSBUYXJzb3Vub3YwHhcNMTQwNjEzMTcyNzQ3WhcNNDExMDI5MTcyNzQ3WjB0MQswCQYDVQQGEwJVUzELMAkGA1UECBMCSUwxEzARBgNVBAcTClNjaGF1bWJ1cmcxHDAaBgNVBAoTE1N5bWJvbCBUZWNobm9sb2dpZXMxCzAJBgNVBAsTAk1DMRgwFgYDVQQDEw9Jb3VyaSBUYXJzb3Vub3YwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCRkeWNk97aFomUXuSc/RddMzGO31b0rHGlpd0KbPmq522AoqUGV6+Mp3E2U2GN9CVq421rOKmQqm+vsPJDd/nkjhXshz+3cDFrFHGY2ZxX93L+XtXBq7XY8O9ktNXM9Cz6f7O26r1c5Ue1QTeZBzHOjfNcU4YJKvVCsc8cDQHs6P96JubYpCvlsiSqDXg6Ck20AqlhdOz189AQF9Qndm74oJy1FAS/6ZKh5xdSUl7OnN6C+Oidwmkz8Xl34V7pN0fSQnp1kaMz+z0xMQIxQXnmK795geiBV1sysnIWfKEB4ip9GxDRj0SLq5n/qj6QP3UX9Im55ba0D5dxEEJNFsxdAgMBAAGjITAfMB0GA1UdDgQWBBQaxvuYVjlGl4sOVLpbqQo9q1WltjANBgkqhkiG9w0BAQsFAAOCAQEAP123iSmemDDFHlBBSoBK7KFi490Nj9BOKotzVByJGccLV2277TkvogUlnPFgk+ARfZu8FYeVeNJbp0K+iznFIv51NfcS5YpxUB01c0zcxHSXUt6BsC/3Z8NKaOYoKyrfmHaW9OVGDhY2JPGirBAIQp+y7a7IpTh1mVyPSESHgXcKitTrNtNua2yh98CuNmIeZ9fThbxn0VWJ9ChqF1d8Lo1Bxlxyq1m/JVZYFVP9T8rGR3sp2U2+391Yr/Xx2j09cIIDrnTAZXlEOhNrFqe3tObaQrbPVR5/WgVXjmGmXus+Y3ZKVY2t1Ip8q8qOIOCrj0wm531pe+qfQ3CXSXMIIw==" />
+  </characteristic>
+  <characteristic version="10.5" type="Intent">
+    <parm name="Action" value="StartActivity" />
+    <parm name="ActionName" value="android.intent.action.VIEW" />
+    <parm name="Package" value="com.symbol.wfc.pttpro" />
+    <parm name="Uri" value="pttpro://activatewithesn/?showDisclosure=false" />
+  </characteristic>
+  <characteristic version="8.3" type="Intent">
+    <parm name="Action" value="StartActivity" />
+    <parm name="ActionName" value="android.intent.action.VIEW" />
+    <parm name="Package" value="com.symbol.wfc.pttpro" />
+   <parm name="Uri" value="wfctp://WS_BPS_Token2" />
+  </characteristic>
+  
+</wap-provisioningdoc>
