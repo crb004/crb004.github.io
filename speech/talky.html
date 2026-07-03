@@ -1,1 +1,31 @@
 <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My First Speaking Web Page</title>
+</head>
+<body>
+
+    <h1>Welcome to My Speaking Website</h1>
+    <p>This is a basic paragraph of text on a simple HTML page.</p>
+	<input id="inputWords" type="text" name="words"> Enter text to speak</input>
+	<button onclick="speakSpecific(document.getElementById('inputWords').value)">Speak entered text</button>
+	<button onclick="speak()">Speak Canned Text</button>
+    <!-- You can add more content here, like images, links, or lists -->
+
+</body>
+<script>
+function speak() {
+const talky = new SpeechSynthesisUtterance("This is a test of the emergency broadcast system");
+window.speechSynthesis.speak(talky);
+}
+function speakSpecific(text) {
+const talky = new SpeechSynthesisUtterance(text);
+window.speechSynthesis.speak(talky);
+}
+</script>
+
+
+
+</html>
