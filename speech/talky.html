@@ -24,7 +24,7 @@ function speakSpecific(text) {
 const talky = new SpeechSynthesisUtterance(text);
 window.speechSynthesis.speak(talky);
 }
-const recognition = new window.SpeechRecognition();
+const recognition = new window.webkitSpeechRecognition();
 const transcriptDiv = document.getElementById('transcribed');
 let finalTranscript = '';
 
