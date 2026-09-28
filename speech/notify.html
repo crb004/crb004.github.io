@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Notifications Controller</title>
+    <style>
+        :root {
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --primary-color: #4a90e2;
+            --success-color: #2ecc71;
+            --warning-color: #e67e22;
+            --danger-color: #e74c3c;
+            --border-radius: 8px;
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .container {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            max-width: 450px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            margin-top: 0;
+            font-size: 24px;
+            color: #2c3e50;
+        }
+
+        p {
+            color: #7f8c8d;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 25px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 25px;
+            transition: var(--transition);
+        }
+
+        .status-default { background-color: #ffeaa7; color: #d63031; }
+        .status-granted { background-color: #d4edda; color: #155724; }
+        .status-denied { background-color: #f8d7da; color: #721c24; }
+
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        button:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.4);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #357abd;
+        }
+
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #27ae60;
+        }
+
+        .btn-secondary {
+            background-color: #95a5a6;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #7f8c8d;
+        }
+
+        button:disabled {
+            background-color: #e0e0e0;
+            color: #a0a0a0;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .info-box {
+            margin-top: 25px;
+            padding: 12px;
+            background-color: #f8f9fa;
+            border-left: 4px solid var(--primary-color);
+            border-radius: 4px;
+            font-size: 13px;
+            text-align: left;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>System Notifications</h1>
+    <p>Enable and test browser-based system notifications with custom payloads.</p>
+    
+    <div id="statusBadge" class="status-badge status-default">Checking Permission...</div>
+
+    <div class="btn-group">
+        <button id="requestBtn" class="btn-primary">
+            🔑 Request Permission
+        </button>
+        <button id="triggerBasicBtn" class="btn-success" disabled>
+            🔔 Trigger Basic Notification
+        </button>
+        <button id="triggerAdvancedBtn" class="btn-secondary" disabled>
+            🚀 Trigger Advanced Notification
+        </button>
+    </div>
+
+    <div class="info-box" id="infoBox">
+        Make sure you allow notifications in your browser settings if prompted. If you've previously denied them, you'll need to reset permissions in your browser's address bar.
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const requestBtn = document.getElementById('requestBtn');
+        const triggerBasicBtn = document.getElementById('triggerBasicBtn');
+        const triggerAdvancedBtn = document.getElementById('triggerAdvancedBtn');
+        const statusBadge = document.getElementById('statusBadge');
+        const infoBox = document.getElementById('infoBox');
+
+        // Check if Notifications API is supported
+        if (!("Notification" in window)) {
+            statusBadge.textContent = "Unsupported Browser";
+            statusBadge.className = "status-badge status-denied";
+            requestBtn.disabled = true;
+            infoBox.textContent = "This browser does not support desktop notifications.";
+            return;
+        }
+
+        // Update UI based on current permission status
+        function updateUI() {
+            const permission = Notification.permission;
+            
+            if (permission === "granted") {
+                statusBadge.textContent = "Permission: Granted";
+                statusBadge.className = "status-badge status-granted";
+                requestBtn.disabled = true; // No need to ask again
+                triggerBasicBtn.disabled = false;
+                triggerAdvancedBtn.disabled = false;
+            } else if (permission === "denied") {
+                statusBadge.textContent = "Permission: Denied";
+                statusBadge.className = "status-badge status-denied";
+                requestBtn.disabled = true; // Can't request if explicitly blocked
+                triggerBasicBtn.disabled = true;
+                triggerAdvancedBtn.disabled = true;
+                infoBox.innerHTML = "🚫 <strong>Permission Blocked:</strong> You have blocked notifications. Please reset site permissions in your browser's site settings to re-enable.";
+            } else {
+                statusBadge.textContent = "Permission: Required";
+                statusBadge.className = "status-badge status-default";
+                requestBtn.disabled = false;
+                triggerBasicBtn.disabled = true;
+                triggerAdvancedBtn.disabled = true;
+            }
+        }
+
+        // Request Permission Handler
+        requestBtn.addEventListener('click', () => {
+            Notification.requestPermission().then(permission => {
+                updateUI();
+                if (permission === 'granted') {
+                    showBasicNotification("Access Granted!", "You have successfully enabled system notifications.");
+                }
+            });
+        });
+
+        // Trigger Basic Notification
+        triggerBasicBtn.addEventListener('click', () => {
+            showBasicNotification(
+                "Simple Alert", 
+                "This is a standard system notification from your webpage."
+            );
+        });
+
+        // Trigger Advanced Notification
+        triggerAdvancedBtn.addEventListener('click', () => {
+            if (Notification.permission === "granted") {
+                const options = {
+                    body: "This notification includes custom options like an icon, silent alerts, and tag tracking.",
+                    icon: "https://via.placeholder.com/128", // Replace with your own icon asset path
+                    tag: "advanced-notification-demo", // Prevents duplicates by replacing existing notifications with same tag
+                    requireInteraction: true // Keeps the notification visible until user clicks or dismisses it
+                };
+
+                const n = new Notification("Advanced System Notice 🚀", options);
+                
+                n.onclick = (e) => {
+                    e.preventDefault();
+                    window.focus();
+                    alert("You clicked the notification!");
+                    n.close();
+                };
+            }
+        });
+
+        // Helper function for basic notifications
+        function showBasicNotification(title, message) {
+            if (Notification.permission === "granted") {
+                new Notification(title, { body: message });
+            }
+        }
+
+        // Initial UI Check
+        updateUI();
+    });
+</script>
+
+</body>
+</html>
