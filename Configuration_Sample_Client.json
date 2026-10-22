@@ -1,0 +1,117 @@
+{
+    "version": 1,
+    "name": "Zebra Sample Client Support Config",
+    "lastModified": "2026-07-16 04:30",
+    "noMatchingIntentResponse": "I didn't catch that. Please try again.",
+    "endConversationTone": false,
+    "triggers": [
+        "wakeword", "intent", "appApi", "button", "accessoryButton"
+    ],
+    "apps": [
+        {
+            "name": "Zebra sample client",
+            "package": "com.zebra.voicerouter.sampleclient",
+            "spokenName": "(zebra )?sample client"
+        }
+    ],
+    "intents": [
+        {
+            "name": "Volume Up",
+            "actions": [{ "type":"built-in" }]
+        },
+        {
+            "name": "Volume Down",
+            "actions": [{ "type":"built-in" }]
+        },
+        {
+            "name": "Volume Mute",
+            "actions": [{ "type":"built-in" }]
+        },
+        {
+            "name": "Volume Unmute",
+            "actions": [{ "type":"built-in" }]
+        },
+        {
+            "name": "Cancel",
+            "actions": [{ "type":"built-in" }]
+        },
+        {
+            "name": "Call",
+            "actions": [{ "type":"aidl", "appName":"Zebra sample client" }]
+        },
+        {
+            "name": "Message",
+            "actions": [{ "type":"aidl", "appName":"Zebra sample client" }]
+        }
+    ],
+    "routes": [
+        {
+            "patterns": [
+                "cancel",
+                "never ?mind",
+                "forget it",
+                "stop",
+                "abort"
+            ],
+            "intentName": "Cancel"
+        },
+        {
+            "patterns": [
+                "volume up",
+                "increase( the)? volume",
+                "(pump|raise|turn|bump|crank) up the (volume|sound)( level)?",
+                "make( it|the volume) louder",
+                "turn( it|the volume) up"
+            ],
+            "intentName": "Volume Up"
+        },
+        {
+            "patterns": [
+                "volume down",
+                "decrease( the)? volume",
+                "(drop|lower|turn|bump|crank) down the (volume|sound)( level)?",
+                "make( it|the volume) quieter",
+                "turn( it|the volume) down"
+            ],
+            "intentName": "Volume Down"
+        },
+        {
+            "patterns": [
+                "mute",
+                "turn off( the)? (volume|sound|speaker)",
+                "turn the (volume|sound|speaker) off"
+            ],
+            "intentName": "Volume Mute"
+        },
+        {
+            "patterns": [
+                "unmute",
+                "turn on( the)? (volume|sound|speaker)",
+                "turn the (volume|sound|speaker) on"
+            ],
+            "intentName": "Volume Unmute"
+        },
+        {
+            "comment": "These patterns handle sending a message, capturing both the recipient's name and the message content.",
+            "patterns": [
+                "send (a )?(text|message) to (?<name>.+)",
+                "\\b(text|message) (?<name>\\w+( \\w+)?)$",
+                "say (?<message>.*?) to (?<name>.*)",
+                "(send( a (text|message))?|text) (?<message>.*?) to (?<name>.*)",
+                "message (?<name>.*?) and say (?<message>.*)"
+            ],
+            "intentName": "Message"
+        },
+        {
+            "comment": "These patterns handle various ways a user can initiate a call to a person or number.",
+            "patterns": [
+                "(start a )?(voice )?call( to\\b)?( (?<name>.*))?",
+                "make a (phone |voice )?call to (?<name>.*)",
+                "(phone|dial) (?<name>.*)",
+                "(ring|buzz|converse with|chat with) (?<name>.*)",
+                "i want to (call|phone|dial) (?<name>.*)"
+            ],
+            "intentName": "Call"
+        }
+    ]
+}
